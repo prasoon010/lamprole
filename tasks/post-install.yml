@@ -1,0 +1,9 @@
+---
+- name: 'PostInstallation  - Restarting '
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: true
+  with_items:
+    - httpd
+    - mariadb

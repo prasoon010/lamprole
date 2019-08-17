@@ -1,0 +1,43 @@
+---
+
+- name: 'httpd-php  - Installation'
+  yum:
+    name:
+      - httpd
+      - php
+      - php-mysql
+    state: present
+
+- name: 'httpd-php - Creating Virtualhost'
+  template:
+    src: virtualhost.j2
+    dest: "/etc/httpd/conf.d/{{domain}}.conf"
+
+- name: 'httpd-php - Creating Virtualhost document root'
+  file:
+    path: "/var/www/html/{{domain}}"
+    state: directory
+    owner: apache
+    group: apache
+  
+  
+- name: 'httpd-php  - Creating info.html'
+  copy:  
+    src: info.html
+    dest: "/var/www/html/{{domain}}/info.html"
+    owner: apache
+    group: apache
+      
+- name: 'httpd-php  - Creating index.php'
+  copy:  
+    src: info.php
+    dest: "/var/www/html/{{domain}}/info.php"
+    owner: apache
+    group: apache
+
+    
+- name: 'httpd-php  - Restarting/Enabling'
+  service:
+    name: httpd
+    state: restarted
+    enabled: true

@@ -1,0 +1,6 @@
+---
+# tasks file for lamp
+- include_tasks: httpd-php.yml
+- include_tasks: mariadb.yml
+- include_tasks: post-install.yml
+

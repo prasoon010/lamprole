@@ -1,0 +1,49 @@
+---
+
+- name: 'MariaDB - Installing Packages'
+  yum:
+    name:
+      - mariadb-server
+      - MySQL-python
+    state: present
+
+- name: 'MariaDB - Restarting MariaDB'
+  service:
+    name: mariadb
+    state: restarted
+    enabled: yes
+
+- name: 'MariaDB - Reseting mariadb root password'
+  ignore_errors: yes
+  mysql_user:
+    login_user: root
+    login_password: ''
+    user: root
+    password: "{{ mysql_root }}"
+    host_all: yes
+        
+- name: 'MariaDB - Removing anonymous users'
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root }}"
+    user: ''
+    host_all: yes
+    state: absent
+        
+
+- name: 'MariaDB - Creating Database'
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root }}"
+    name: "{{ mysql_database }}"
+    state: present
+        
+
+- name: 'MariaDB - Creating user'
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root }}"
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: localhost
+    priv: "{{ mysql_database }}.*:ALL"

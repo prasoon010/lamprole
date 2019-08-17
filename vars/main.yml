@@ -1,0 +1,8 @@
+---
+# vars file for lamp
+
+mysql_root: mysqlroot123
+mysql_database: wordpress
+mysql_user: wpuser
+mysql_password: wpuser123
+domain: www.prasoon.com
